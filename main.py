@@ -87,7 +87,7 @@ def plot_files(directory):
 
     plt.legend()
     # Show the plot
-    d_title= directory[-2:] # Title of the plot last 2
+    d_title= directory[-3:] # Title of the plot last 2
     d_title= d_title.replace('/', '')
     plt.savefig('D:/Results/'+d_title+"average")
     plt.show()
@@ -96,7 +96,7 @@ def plot_files(directory):
     av_f_CoF = numpy.mean(l_data, axis=1)
     result = av_f_CoF.info
     print(result)
-    title = directory[-2:]
+    title = directory[-3:]
     All_title += [title]
     print(values)
     av_f_CoF = av_f_CoF.rolling(500).max()
