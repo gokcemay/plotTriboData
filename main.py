@@ -13,6 +13,7 @@ from matplotlib.lines import Line2D
 All_title = []
 SSCoF = pd.DataFrame()
 SSDCoF = pd.DataFrame()
+av_f_CoF_A= pd.DataFrame()
 
 
 
@@ -32,9 +33,11 @@ def select_directory(entry):
 def plot_files(directory):
     global l_data
     global max_distance
-    global av_f_CoF
+    global av_f_CoF_A
     global All_title
-
+    global figCoFs
+    global av_f_CoF
+    figCoFs = plt.figure()
 
     # Get all the txt files in the directory
     txt_files = [f for f in os.listdir(directory) if f.endswith(".txt")]
@@ -86,7 +89,7 @@ def plot_files(directory):
     # Show the plot
     d_title= directory[-2:] # Title of the plot last 2
     d_title= d_title.replace('/', '')
-    plt.savefig(d_title+"average")
+    plt.savefig('D:/Results/'+d_title+"average")
     plt.show()
 
 # Average f_CoF values
@@ -99,7 +102,7 @@ def plot_files(directory):
     av_f_CoF = av_f_CoF.rolling(500).max()
     plt.plot(max_distance, av_f_CoF, label=directory)
     plt.title(d_title)
-    plt.savefig(d_title+"avCoF")
+    plt.savefig('D:/Results/'+d_title+"avCoF")
     plt.ylim([0, 0.38])
     plt.show()
 
@@ -109,7 +112,7 @@ def plot_files(directory):
     plt.xlabel("Samples")
     plt.ylabel("CoF")
     plt.title("CoF values")
-    plt.savefig(d_title+"Bar.png")
+    plt.savefig('D:/Results/'+d_title+"Bar.png")
     plt.show()
 
 # Av_CoF with Error bars
@@ -119,10 +122,12 @@ def plot_files(directory):
     plt.xlabel("Samples")
     plt.ylabel("CoF")
     plt.title("CoF values")
-    plt.savefig(d_title+"SD.png")
+    plt.savefig('D:/Results/'+d_title+"SD.png")
     plt.show()
 
-
+# Append Average Cof values Av_CoF_f_A
+#    av_f_CoF_A = numpy.concatenate((av_f_CoF_A, av_f_CoF.rolling(500).max()), axis=0)
+    av_f_CoF_A = pd.concat([av_f_CoF_A, pd.DataFrame(av_f_CoF.rolling(500).max())],axis=1)
 
 
 def steady (vEntry):
@@ -132,7 +137,7 @@ def steady (vEntry):
     if max_distance is None:
         print("Max distance none")
     else:
-        print("max distance",max(max_distance),"Entry",vEntry,"/n","Max distance value",numpy.argmax(max_distance>23),"Null value",av_f_CoF.isnull().values.any())
+        print("max distance",max(max_distance),"Entry",vEntry,"/n","Max distance value",numpy.argmax(max_distance>vEntry),"Null value",av_f_CoF.isnull().values.any())
         index = numpy.argmax(max_distance>vEntry)
         SSCoF= numpy.append(SSCoF, (numpy.mean(av_f_CoF[index:])))
         SSDCoF= numpy.append(SSDCoF, (numpy.std(av_f_CoF[index:])))
@@ -150,11 +155,20 @@ def plotAll ():
     addlabels(All_title, v1)
     plt.xlabel("Samples")
     plt.ylabel("CoF")
-    plt.title("CoF values")
-    plt.savefig("All data")
+    plt.title('D:/Results/'+"CoF values")
+    plt.savefig('D:/Results/'+"All data")
     plt.show()
 
-
+def plotCoFAll ():
+    global av_f_CoF_A
+    global All_title
+    max_distance2 = pd.DataFrame(numpy.arange(0, 50, (50/len(av_f_CoF_A)), dtype=float)) # found the length of the dataframe av_f_CoF_A and make a new df for time
+    print(All_title)
+    figCoFs =plt.plot( max_distance2, av_f_CoF_A)
+    plt.ylim([0, 0.38])
+    plt.legend(figCoFs, All_title) # set legend from All_title for CoFs plot
+    plt.savefig('D:/Results/'+"All CoF")
+    plt.show()
 
 # Create the GUI window
 window = tk.Tk()
@@ -185,6 +199,11 @@ plot_button.pack()
 # Create the Allplot button
 plot_button = tk.Button(window, text="Plot ALL", command=lambda: plotAll())
 plot_button.pack()
+
+# Create all CoF versus distance plots button
+pbutton = tk.Button(window, text="Plot CoF all", command=lambda: plotCoFAll ())
+pbutton.pack()
+
 
 # Create the main loop
 window.mainloop()
