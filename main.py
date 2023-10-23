@@ -25,7 +25,8 @@ av_f_CoF_A= pd.DataFrame()
 #Function to add values to the bar plot
 def addlabels(x,y):
     for i in range(len(x)):
-        plt.text(i,y[i],y[i])
+        plt.text(i, y[i]*0.5, y[i], ha='center', va='center',
+                 bbox=dict(facecolor='white', alpha=.5))
 
 # Function to select the directory
 def select_directory(entry):
