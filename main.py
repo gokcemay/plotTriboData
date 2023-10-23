@@ -8,6 +8,10 @@ import sigfig #For significant figures
 from matplotlib.lines import Line2D
 
 
+
+#change plot style to something fancy
+plt.style.use("fivethirtyeight")
+
 # Global varaibles
 
 All_title = []
@@ -117,13 +121,13 @@ def plot_files(directory):
 
 # Av_CoF with Error bars
 
-    plt.errorbar(values,Av_CoF,Std_CoF,xerr= None,ls='none', marker ='^')
-    addlabels(values, Av_CoF_f)
-    plt.xlabel("Samples")
-    plt.ylabel("CoF")
-    plt.title("CoF values")
-    plt.savefig('D:/Results/'+d_title+"SD.png")
-    plt.show()
+    # plt.errorbar(values,Av_CoF,Std_CoF,xerr= None,ls='none', marker ='^')
+    # addlabels(values, Av_CoF_f)
+    # plt.xlabel("Samples")
+    # plt.ylabel("CoF")
+    # plt.title("CoF values")
+    # plt.savefig('D:/Results/'+d_title+"SD.png")
+    # plt.show()
 
 # Append Average Cof values Av_CoF_f_A
 #    av_f_CoF_A = numpy.concatenate((av_f_CoF_A, av_f_CoF.rolling(500).max()), axis=0)
@@ -151,23 +155,34 @@ def plotAll ():
     global All_title
     global SSDCoF
     v1= [round(elem, 5) for elem in SSCoF ] # round to 5 digits
-    plt.errorbar(All_title,SSCoF,SSDCoF,xerr= None,ls='none', marker ='^')
+    plt.bar(All_title,SSCoF,yerr=SSDCoF,xerr= None,align='center', alpha=0.5, ecolor='black', capsize=10)
     addlabels(All_title, v1)
     plt.xlabel("Samples")
     plt.ylabel("CoF")
-    plt.title('D:/Results/'+"CoF values")
+    plt.title("CoF values")
     plt.savefig('D:/Results/'+"All data")
     plt.show()
 
-def plotCoFAll ():
+def plotCoFAll (): #plot all CoF values
     global av_f_CoF_A
     global All_title
     max_distance2 = pd.DataFrame(numpy.arange(0, 50, (50/len(av_f_CoF_A)), dtype=float)) # found the length of the dataframe av_f_CoF_A and make a new df for time
     print(All_title)
-    figCoFs =plt.plot( max_distance2, av_f_CoF_A)
-    plt.ylim([0, 0.38])
+    print('Dataframe burada')
+    print(av_f_CoF_A)
+    #get unfilled markers
+    markers=['x','*','o','v','d']
+
+    #generate empty figure
+    figCoFs = plt.figure()
+    plt.ylim([0, 0.38])             #set ylimit
+    plt.title("CoF vs Distance")    #set title
+    # for i in range(len(av_f_CoF_A.columns)):
+    #     figCoFs = plt.plot( max_distance2, av_f_CoF_A[[i]], marker=markers[i],ls="none")
+    figCoFs = plt.plot( max_distance2, av_f_CoF_A)
     plt.legend(figCoFs, All_title) # set legend from All_title for CoFs plot
     plt.savefig('D:/Results/'+"All CoF")
+
     plt.show()
 
 # Create the GUI window
