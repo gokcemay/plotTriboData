@@ -7,9 +7,8 @@ import numpy
 import sigfig #For significant figures
 from matplotlib.lines import Line2D
 
-with open('D:/Results/CoF.csv', 'w') as f: # open and create a CoF.csv file to store results
-    f.write('Sample'+'\t'+'CoF'+'\t'+'SD')
-    f.write('\n')
+
+
 
 #change plot style to something fancy
 plt.style.use("fivethirtyeight")
@@ -153,10 +152,18 @@ def steady (vEntry):
         print(All_title)
 
 
+
+
 def plotAll ():
     global SSCoF
     global All_title
     global SSDCoF
+            #Write results to a file
+    with open('D:/Results/CoF'+str(''.join(All_title))+'.csv', 'w') as f: # Make a new csv file with all sample names
+        f.write('Samples, '+str(', '.join(All_title))) # Convert elements of list to strings
+        f.write('\n'+'CoF, '+str(', '.join(str(x) for x in SSCoF))) # Convert elements of dataframe to strings
+        f.write('\n'+'SD, '+str(', '.join(str(x) for x in SSDCoF))) # Convert elements of dataframe to strings
+
     v1= [round(elem, 5) for elem in SSCoF ] # round to 5 digits
     plt.bar(All_title,SSCoF,yerr=SSDCoF,xerr= None,align='center', alpha=0.5, ecolor='black', capsize=10)
     addlabels(All_title, v1)
