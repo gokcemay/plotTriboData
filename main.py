@@ -7,7 +7,9 @@ import numpy
 import sigfig #For significant figures
 from matplotlib.lines import Line2D
 
-
+with open('D:/Results/CoF.csv', 'w') as f: # open and create a CoF.csv file to store results
+    f.write('Sample'+'\t'+'CoF'+'\t'+'SD')
+    f.write('\n')
 
 #change plot style to something fancy
 plt.style.use("fivethirtyeight")
@@ -94,7 +96,7 @@ def plot_files(directory):
     # Show the plot
     d_title= directory[-3:] # Title of the plot last 2
     d_title= d_title.replace('/', '')
-    plt.savefig('D:/Results/'+d_title+"average")
+    plt.savefig('D:/Results/'+d_title+"average",bbox_inches='tight')
     plt.show()
 
 # Average f_CoF values
@@ -107,7 +109,7 @@ def plot_files(directory):
     av_f_CoF = av_f_CoF.rolling(500).max()
     plt.plot(max_distance, av_f_CoF, label=directory)
     plt.title(d_title)
-    plt.savefig('D:/Results/'+d_title+"avCoF")
+    plt.savefig('D:/Results/'+d_title+"avCoF",bbox_inches='tight')
     plt.ylim([0, 0.38])
     plt.show()
 
@@ -117,7 +119,7 @@ def plot_files(directory):
     plt.xlabel("Samples")
     plt.ylabel("CoF")
     plt.title("CoF values")
-    plt.savefig('D:/Results/'+d_title+"Bar.png")
+    plt.savefig('D:/Results/'+d_title+"Bar.png",bbox_inches='tight')
     plt.show()
 
 # Av_CoF with Error bars
@@ -161,8 +163,9 @@ def plotAll ():
     plt.xlabel("Samples")
     plt.ylabel("CoF")
     plt.title("CoF values")
-    plt.savefig('D:/Results/'+"All data")
+    plt.savefig('D:/Results/'+"All data",bbox_inches='tight')
     plt.show()
+
 
 def plotCoFAll (): #plot all CoF values
     global av_f_CoF_A
@@ -171,18 +174,14 @@ def plotCoFAll (): #plot all CoF values
     print(All_title)
     print('Dataframe burada')
     print(av_f_CoF_A)
-    #get unfilled markers
-    markers=['x','*','o','v','d']
-
     #generate empty figure
     figCoFs = plt.figure()
     plt.ylim([0, 0.38])             #set ylimit
     plt.title("CoF vs Distance")    #set title
-    # for i in range(len(av_f_CoF_A.columns)):
-    #     figCoFs = plt.plot( max_distance2, av_f_CoF_A[[i]], marker=markers[i],ls="none")
+
     figCoFs = plt.plot( max_distance2, av_f_CoF_A)
     plt.legend(figCoFs, All_title) # set legend from All_title for CoFs plot
-    plt.savefig('D:/Results/'+"All CoF")
+    plt.savefig('D:/Results/'+"All CoF",bbox_inches='tight')
 
     plt.show()
 
