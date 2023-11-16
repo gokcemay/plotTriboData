@@ -69,14 +69,10 @@ class CSVSelector:
             axs[0].set_ylim(0.20,0.35)
             axs[1].set_ylim(0.20,0.35)
 
-            # Plot the error plot in the left column
-            ax1 = axs[0].errorbar(df_transposed1['Samples'], df_transposed1['CoF'], df_transposed1['SD'],ls='none',capsize=10, marker='^', markersize=10, markerfacecolor='red', label=self.filename1)
+            # Box plot
 
+            ax1 = axs[0].box_plot(df_transposed1['CoF']
 
-            ax2 = axs[1].errorbar(df_transposed2['Samples'], df_transposed2['CoF'], df_transposed2['SD'],ls='none',capsize=10, marker='^', markersize=10, markerfacecolor='blue', label=self.filename2)
-
-
-            # Add a legend to the right column
             axs[0].legend([ax1[0]], labels=['CoF'])
             axs[1].legend([ax2[0]], labels=['CoF'])
 

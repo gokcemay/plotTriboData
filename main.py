@@ -80,7 +80,9 @@ def plot_files(directory):
         #print(f_CoF.info)
         l_data=pd.concat([l_data, f_CoF], axis=1)
 
-
+        #ADD-----------------------------------
+        # Export all CoF SS values for all samples with folder name as file name
+        # Then another script will plot boxplots for each sample and combine them
 
 
 
@@ -150,6 +152,7 @@ def steady (vEntry):
         print(SSDCoF)
         print(SSCoF)
         print(All_title)
+
 
 
 
